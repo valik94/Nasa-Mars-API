@@ -10,13 +10,14 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/roverSpinner"
+        app:layout_constraintBottom_toTopOf="@+id/rovers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/rovers"
+        app:layout_constraintTop_toBottomOf="@id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/items"
@@ -26,6 +27,7 @@
 
     <NumberPicker
         android:id="@+id/items"
+        app:layout_constraintTop_toBottomOf="@id/rovers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/earthdatePicker"
@@ -33,10 +35,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <DatePicker
+        app:layout_constraintTop_toBottomOf="@id/items"
         android:id="@+id/earthdatePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:datePickerMode="spinner"
+        android:layout_height="300dp"
+        android:datePickerMode="calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

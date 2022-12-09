@@ -21,8 +21,8 @@ Spinner ropinner;
 NumberPicker itemPicker;
 DatePicker datePicker;
 ImageView img;
-    String date = "";
-    String rover = "";
+    String date = "2004-11-20";
+    String rover = "Curiosity";
     ArrayList<NasaPhoto> allPhotos = new ArrayList<>(0);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +35,28 @@ ImageView img;
         itemPicker = findViewById(R.id.items);
         datePicker = findViewById(R.id.earthdatePicker);
         img = findViewById(R.id.image);
-        String[] rovers = {"Opportunity","Curiosity","Spirit"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.rover_item,R.id.roverName,rovers);
-        ropinner.setAdapter(adapter);
+      //  String[] rovers = {"Opportunity","Curiosity","Spirit"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.rover_item,R.id.roverName,rovers);
+//        ropinner.setAdapter(adapter);
 
 
-        ropinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                rover = rovers[i];
-                getData(rover, date);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        ropinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                rover = rovers[i];
+//                getData(rover, date);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         itemPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+
                 networkingService.getImageData(allPhotos.get(i1).img_url);
             }
         });
@@ -67,11 +68,11 @@ ImageView img;
             public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
                 int month =  datePicker.getMonth() + 1; // 0 and 11
                 date = datePicker.getYear() +"-"+ month +"-" + datePicker.getDayOfMonth();
-              getData(rover,date);
+              getData("Curiosity",date);
             }
         });
 
-        getData("Opportunity","2015-3-10");
+        getData("Curiosity","2022-12-08");
     }
 
     public void getData(String rover, String date){
@@ -83,21 +84,26 @@ ImageView img;
         allPhotos = jsonService.getNasaData(josnString);
         if (allPhotos.size() > 0) {
             networkingService.getImageData(allPhotos.get(0).img_url);
+        }
+        else {
+            img.setImageResource(R.drawable.img);
+        }
+    }
 
-            String[] displayedValues = new String[allPhotos.size()];
+    @Override
+    public void imageListener(Bitmap image) {
+        img.setImageBitmap(image);
+        if (allPhotos.size() > 0) {
+        String[] displayedValues = new String[allPhotos.size()];
             for (int i = 0; i < allPhotos.size(); i++) {
                 displayedValues[i] = allPhotos.get(i).id + "";
             }
             itemPicker.setMinValue(0);
             itemPicker.setMaxValue(displayedValues.length - 1);
             itemPicker.setDisplayedValues(displayedValues);
+        }else {
+            String[] displayedValues = new String[0];
+            itemPicker.setDisplayedValues(displayedValues);
         }
-
-    }
-
-    @Override
-    public void imageListener(Bitmap image) {
-
-        img.setImageBitmap(image);
     }
 }

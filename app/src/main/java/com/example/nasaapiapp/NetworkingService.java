@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -47,28 +48,10 @@ public class NetworkingService {
         networkExecutorService.execute(new Runnable() {
             @Override
             public void run() {
-
-//                 //  String img = "https://images.freeimages.com/images/small-previews/a31/colorful-umbrella-1176220.jpg";
-//                    URL url = new URL(imgurl);
-//                  //  InputStream in = new java.net.URL(imgurl).openStream();
-//                   // InputStream is = new BufferedInputStream(url.openStream());
-//
-//                    Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream()) ;
-                HttpURLConnection httpURLConnection = null;
-                // any code here will run in background thread
                 try {
-                    String jsonString = "";
                     URL urlObject = new URL(imgurl);
-                    //jsonString = ((String)urlObject.getContent());
-                    //Log.d("txt",jsonString);
-                    httpURLConnection = (HttpURLConnection) urlObject.openConnection();
-                    httpURLConnection.setRequestMethod("GET");
-                    httpURLConnection.setRequestProperty("Content-Type", "application/json");
-
-                    InputStream in = httpURLConnection.getInputStream();
-                    BufferedInputStream bis = new BufferedInputStream(in);
-                    Bitmap bitmap = BitmapFactory.decodeStream(bis);
-
+                    InputStream in =  urlObject.openStream();
+                   Bitmap  bitmap = BitmapFactory.decodeStream(in);
 
                     networkingHandler.post(new Runnable() {
                         @Override
